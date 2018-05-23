@@ -7,6 +7,7 @@ conf = ConfigParser()
 conf.read('conf.ini')
 
 ifttt_webhook_key = conf.get('AUTH', 'ifttt_webhook_key')
+mp3_output_file_dir = conf.get('AUTH', 'mp3_output_file_dir')
 
 from urllib.parse import quote
 from urllib.parse import urljoin
@@ -35,7 +36,7 @@ def index():
         for line in r.readlines():
             app.logger.info(line)
 
-        r2 = os.popen('ffmpeg -i {}.mp4 ../../../file/asmr/{}.mp3'.format(title, title))
+        r2 = os.popen('ffmpeg -i {}.mp4 {}.mp3'.format(title, os.path.join(mp3_output_file_dir, title)))
 
         for line in r2.readlines():
             app.logger.info(line)
