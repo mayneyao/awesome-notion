@@ -30,18 +30,19 @@ def index():
     url = data['url']
 
     # 1. 下载视频转化为音频存储
-    if not os.path.exists('{}.mp4'.format(title)):
-        r = os.popen('you-get {}'.format(url))
+    if not os.path.exists('{}.mp4'.format(quote(title))):
 
-        for line in r.readlines():
-            app.logger.info(line)
+        r = os.popen('you-get {} -O {}'.format(url, quote(title)))
+        r.read()
+        # for line in r.readlines():
+        #     app.logger.error(line)
 
-        cmd = 'ffmpeg -i {}.mp4 {}.mp3'.format(title, os.path.join(mp3_output_file_dir, title))
-        app.logger.info(cmd)
+        cmd = 'ffmpeg -i {}.mp4 {}.mp3'.format(quote(title), os.path.join(mp3_output_file_dir, quote(title)))
+        app.logger.error(cmd)
         r2 = os.popen(cmd)
 
-        for line in r2.readlines():
-            app.logger.info(line)
+        # for line in r2.readlines():
+        #     app.logger.info(line)
 
     # 2. 同步音频到云盘
     file_url = urljoin('https://file.gine.me/asmr/', quote('{}.mp3'.format(title)))
