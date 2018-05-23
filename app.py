@@ -36,7 +36,9 @@ def index():
         for line in r.readlines():
             app.logger.info(line)
 
-        r2 = os.popen('ffmpeg -i {}.mp4 {}.mp3'.format(title, os.path.join(mp3_output_file_dir, title)))
+        cmd = 'ffmpeg -i {}.mp4 {}.mp3'.format(title, os.path.join(mp3_output_file_dir, title))
+        app.logger.info(cmd)
+        r2 = os.popen(command=cmd)
 
         for line in r2.readlines():
             app.logger.info(line)
