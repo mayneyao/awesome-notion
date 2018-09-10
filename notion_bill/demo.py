@@ -23,7 +23,7 @@ class PersonBill():
 class Bill():
     def __init__(self, csv_file):
         bill_df = pd.read_csv(csv_file)
-        self.bill_df = bill_df[bill_df['支付状态'] == 'Yes']
+        self.bill_df = bill_df[(bill_df['支付状态'] == 'Yes') & (bill_df['归档'] == 'No')]
         self.persons = self.get_all_person()
         self.person_detail = {}
 
@@ -48,6 +48,7 @@ class Bill():
     def a_pay_to_b(self, a, b, money):
         """
         a需要向b支付
+        :param money: 金额
         :param a:
         :param b:
         :return:
@@ -86,9 +87,9 @@ class Bill():
                     if participant[0] != payer:
                         self.a_pay_to_b(participant[0], payer, money)
 
-    def get_person_need_pay(self, name):
-        payment = self.person_detail[name].payment
-        income = self.person_detail[name].income
+    def get_person_need_pay(self, person_name):
+        payment = self.person_detail[person_name].payment
+        income = self.person_detail[person_name].income
 
         person = [name for name in income.keys()]
         person.extend([name for name in payment.keys()])
@@ -97,11 +98,11 @@ class Bill():
         for obj in person:
             need_pay[obj] = (income.get(obj, 0)) - (payment.get(obj, 0))
 
-        self.person_detail[name].need_pay = need_pay
+        self.person_detail[person_name].need_pay = need_pay
 
 
 if __name__ == '__main__':
-    csv_file = '/Users/mayne/bill.csv'
+    csv_file = '/Users/mayne/Desktop/bill.csv'
 
     bill = Bill(csv_file)
     bill.handle_bill()
