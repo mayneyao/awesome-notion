@@ -1,3 +1,4 @@
+import fire
 import pandas as pd
 
 
@@ -17,7 +18,7 @@ class PersonBill():
 
         for obj, money in self.need_pay.items():
             _type = '收取' if money > 0 else '支付'
-            print('{}需要向{}{}{}'.format(name, obj, _type, abs(money)))
+            print('{}需要向{}{}{}'.format(self.name, obj, _type, abs(money)))
 
 
 class Bill():
@@ -29,6 +30,13 @@ class Bill():
 
         for person in self.persons:
             self.set_person_bill_detail(person)
+
+    def run(self):
+        self.handle_bill()
+        self.get_all_person()
+        for name, detail in self.person_detail.items():
+            self.get_person_need_pay(name)
+            detail.print_need_pay()
 
     def set_person_bill_detail(self, name):
         self.person_detail[name] = PersonBill(name)
@@ -102,12 +110,4 @@ class Bill():
 
 
 if __name__ == '__main__':
-    csv_file = '/Users/mayne/Desktop/bill.csv'
-
-    bill = Bill(csv_file)
-    bill.handle_bill()
-    bill.get_all_person()
-
-    for name, detail in bill.person_detail.items():
-        bill.get_person_need_pay(name)
-        detail.print_need_pay()
+    fire.Fire(Bill)
