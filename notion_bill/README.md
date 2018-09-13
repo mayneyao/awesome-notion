@@ -4,5 +4,7 @@
 
 ## 怎么用
 
-1. 
+1. 导出账单表格为csv文件，[表格模板](https://)
+2. `python bill.py bill.csv`
+
 
