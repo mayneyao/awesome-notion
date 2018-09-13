@@ -109,5 +109,10 @@ class Bill():
         self.person_detail[person_name].need_pay = need_pay
 
 
+def main(file):
+    bill = Bill(file)
+    bill.run()
+
+
 if __name__ == '__main__':
-    fire.Fire(Bill)
+    fire.Fire(main)
